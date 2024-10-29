@@ -1,0 +1,12 @@
+# Web framework
+Flask
+
+numpy
+
+piper-tts
+# Additional dependencies
+python-dotenv
+
+Werkzeug
+
+click
