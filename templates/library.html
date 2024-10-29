@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Audio Library</title>
+    <style>
+        .audio-list {
+            max-width: 800px;
+            margin: 20px auto;
+        }
+        .audio-item {
+            border: 1px solid #ddd;
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .audio-meta {
+            color: #666;
+            font-size: 0.9em;
+            margin: 5px 0;
+        }
+        .no-files {
+            text-align: center;
+            color: #666;
+            padding: 20px;
+        }
+        .back-link {
+            display: block;
+            margin: 20px;
+            color: #0066cc;
+            text-decoration: none;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <a href="/" class="back-link">← Back to Generator</a>
+    <div class="audio-list">
+        <h1>Audio Library</h1>
+        
+        {% if audio_files %}
+            {% for file in audio_files %}
+                <div class="audio-item">
+                    <audio controls>
+                        <source src="{{ url_for('serve_audio', filename=file.filename) }}" type="audio/wav">
+                        Your browser does not support the audio element.
+                    </audio>
+                    <div class="audio-meta">
+                        <strong>Created:</strong> {{ file.created_at }} | 
+                        <strong>Size:</strong> {{ file.size }}
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="no-files">
+                No audio files found. Generate some audio first!
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>

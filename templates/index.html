@@ -62,15 +62,16 @@
         </div>
         {% endif %}
         
-        {% if audio_file %}
+        {% if audio_path %}
         <div class="audio-container">
             <h3>Generated Audio:</h3>
             <audio controls>
-                <source src="{{ url_for('serve_audio', data=audio_file) }}" type="audio/wav">
+                <source src="{{ url_for('serve_audio', filename=audio_path) }}" type="audio/wav">
                 Your browser does not support the audio element.
             </audio>
         </div>
         {% endif %}
+        <a href="{{ url_for('audio_library') }}">View Audio Library</a>
     </div>
 </body>
 </html>
