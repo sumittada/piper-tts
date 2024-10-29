@@ -9,6 +9,9 @@ from datetime import datetime
 app = Flask(__name__)
 
 # Initialize Piper TTS engine
+# Download suitable voice model and config files from:
+# https://huggingface.co/rhasspy/piper-voices/tree/main
+# And save them in voices subfolder and add the paths here
 VOICE_MODEL_PATH = "voices/en_GB-alan-medium.onnx"
 VOICE_CONFIG_PATH = "voices/en_GB-alan-medium.onnx.json"
 
