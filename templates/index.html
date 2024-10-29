@@ -1,97 +1,48 @@
-<!DOCTYPE html>
-<html data-theme="retro">
-<head>
-    <title>Text-to-Speech Generator</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.4.19/dist/full.min.css" rel="stylesheet" type="text/css" />
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        /* Custom audio player styling */
-        audio {
-            filter: sepia(100%) saturate(70%) grayscale(1) contrast(99%) invert(12%);
-            width: 100%;
-            height: 40px;
-            background-color: #e2d5bc;
-            border: 2px solid #2e282a;
-            border-radius: 4px;
-            box-shadow: 2px 2px 0px #2e282a;
-        }
-        
-        audio::-webkit-media-controls-panel {
-            background-color: #e2d5bc;
-        }
-        
-        audio::-webkit-media-controls-current-time-display,
-        audio::-webkit-media-controls-time-remaining-display {
-            color: #2e282a;
-            font-family: monospace;
-        }
-        
-        audio::-webkit-media-controls-play-button,
-        audio::-webkit-media-controls-mute-button {
-            background-color: #2e282a;
-            border-radius: 2px;
-            filter: invert(1);
-        }
-        
-        audio::-webkit-media-controls-volume-slider,
-        audio::-webkit-media-controls-timeline {
-            background-color: #2e282a;
-            border-radius: 2px;
-            height: 4px;
-        }
-    </style>
-</head>
-<body class="min-h-screen bg-base-200">
-    <div class="container mx-auto px-4 py-8 max-w-3xl">
-        <div class="navbar bg-base-100 rounded-box shadow-lg mb-8 border-2 border-base-content">
-            <div class="flex-1">
-                <h1 class="text-2xl font-bold px-4 font-mono">Text-to-Speech Generator</h1>
-            </div>
-            <div class="flex-none">
-                <a href="{{ url_for('audio_library') }}" class="btn btn-ghost font-mono">
-                    View Library
-                </a>
-            </div>
-        </div>
+{% extends "base.html" %}
 
-        <div class="card bg-base-100 shadow-xl border-2 border-base-content">
-            <div class="card-body">
-                <form method="POST" class="space-y-4">
-                    <div class="form-control">
-                        <textarea 
-                            name="text" 
-                            class="textarea textarea-bordered h-24 font-mono border-2" 
-                            placeholder="Enter text to convert to speech"
-                            required
-                        >{{ text }}</textarea>
-                    </div>
-                    <div class="form-control">
-                        <button type="submit" class="btn btn-primary font-mono">Generate Speech</button>
-                    </div>
-                </form>
+{% block title %}Text-to-Speech Generator{% endblock %}
 
-                {% if error %}
-                <div class="alert alert-error mt-4 border-2 border-base-content">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                    <span class="font-mono">{{ error }}</span>
-                </div>
-                {% endif %}
+{% block navbar_left %}
+<h1 class="text-2xl font-bold px-4 font-mono">Text-to-Speech Generator</h1>
+{% endblock %}
 
-                {% if audio_path %}
-                <div class="mt-6">
-                    <h3 class="text-lg font-semibold mb-2 font-mono">Generated Audio:</h3>
-                    <div class="card bg-base-200 p-4 border-2 border-base-content">
-                        <audio controls>
-                            <source src="{{ url_for('serve_audio', filename=audio_path) }}" type="audio/wav">
-                            Your browser does not support the audio element.
-                        </audio>
-                    </div>
-                </div>
-                {% endif %}
-            </div>
-        </div>
+{% block navbar_right %}
+<a href="{{ url_for('audio_library') }}" class="btn btn-ghost font-mono">
+    View Library
+</a>
+{% endblock %}
+
+{% block content %}
+<form method="POST" class="space-y-4">
+    <div class="form-control">
+        <textarea 
+            name="text" 
+            class="textarea textarea-bordered h-24 font-mono border-2" 
+            placeholder="Enter text to convert to speech"
+            required
+        >{{ text }}</textarea>
     </div>
-</body>
-</html>
+    <div class="form-control">
+        <button type="submit" class="btn btn-primary font-mono">Generate Speech</button>
+    </div>
+</form>
+
+{% if error %}
+<div class="alert alert-error mt-4 border-2 border-base-content">
+    <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+    <span class="font-mono">{{ error }}</span>
+</div>
+{% endif %}
+
+{% if audio_path %}
+<div class="mt-6">
+    <h3 class="text-lg font-semibold mb-2 font-mono">Generated Audio:</h3>
+    <div class="card bg-base-200 p-4 border-2 border-base-content">
+        <audio controls>
+            <source src="{{ url_for('serve_audio', filename=audio_path) }}" type="audio/wav">
+            Your browser does not support the audio element.
+        </audio>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

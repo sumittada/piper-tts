@@ -1,98 +1,49 @@
-<!DOCTYPE html>
-<html data-theme="retro">
-<head>
-    <title>Audio Library</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.4.19/dist/full.min.css" rel="stylesheet" type="text/css" />
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        /* Custom audio player styling */
-        audio {
-            filter: sepia(100%) saturate(70%) grayscale(1) contrast(99%) invert(12%);
-            width: 100%;
-            height: 40px;
-            background-color: #e2d5bc;
-            border: 2px solid #2e282a;
-            border-radius: 4px;
-            box-shadow: 2px 2px 0px #2e282a;
-        }
-        
-        audio::-webkit-media-controls-panel {
-            background-color: #e2d5bc;
-        }
-        
-        audio::-webkit-media-controls-current-time-display,
-        audio::-webkit-media-controls-time-remaining-display {
-            color: #2e282a;
-            font-family: monospace;
-        }
-        
-        audio::-webkit-media-controls-play-button,
-        audio::-webkit-media-controls-mute-button {
-            background-color: #2e282a;
-            border-radius: 2px;
-            filter: invert(1);
-        }
-        
-        audio::-webkit-media-controls-volume-slider,
-        audio::-webkit-media-controls-timeline {
-            background-color: #2e282a;
-            border-radius: 2px;
-            height: 4px;
-        }
-    </style>
-</head>
-<body class="min-h-screen bg-base-200">
-    <div class="container mx-auto px-4 py-8 max-w-3xl">
-        <div class="navbar bg-base-100 rounded-box shadow-lg mb-8 border-2 border-base-content">
-            <div class="flex-1">
-                <a href="/" class="btn btn-ghost font-mono">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-                    </svg>
-                    Back to Generator
-                </a>
-            </div>
-            <div class="flex-none">
-                <h1 class="text-2xl font-bold px-4 font-mono">Audio Library</h1>
-            </div>
-        </div>
+{% extends "base.html" %}
 
-        <div class="card bg-base-100 shadow-xl border-2 border-base-content">
-            <div class="card-body">
-                {% if audio_files %}
-                    <div class="space-y-4">
-                        {% for file in audio_files %}
-                            <div class="card bg-base-200 border-2 border-base-content">
-                                <div class="card-body">
-                                    <audio controls>
-                                        <source src="{{ url_for('serve_audio', filename=file.filename) }}" type="audio/wav">
-                                        Your browser does not support the audio element.
-                                    </audio>
-                                    <div class="flex flex-wrap gap-4 text-sm mt-2 font-mono">
-                                        <div class="badge badge-neutral border-2">
-                                            Created: {{ file.created_at }}
-                                        </div>
-                                        <div class="badge badge-neutral border-2">
-                                            Size: {{ file.size }}
-                                        </div>
-                                        <div class="badge badge-neutral border-2">
-                                            {{ file.filename }}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        {% endfor %}
+{% block title %}Audio Library{% endblock %}
+
+{% block navbar_left %}
+<a href="/" class="btn btn-ghost font-mono">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+    </svg>
+    Back to Generator
+</a>
+{% endblock %}
+
+{% block navbar_right %}
+<h1 class="text-2xl font-bold px-4 font-mono">Audio Library</h1>
+{% endblock %}
+
+{% block content %}
+{% if audio_files %}
+    <div class="space-y-4">
+        {% for file in audio_files %}
+            <div class="card bg-base-200 border-2 border-base-content">
+                <div class="card-body">
+                    <audio controls>
+                        <source src="{{ url_for('serve_audio', filename=file.filename) }}" type="audio/wav">
+                        Your browser does not support the audio element.
+                    </audio>
+                    <div class="flex flex-wrap gap-4 text-sm mt-2 font-mono">
+                        <div class="badge badge-neutral border-2">
+                            Created: {{ file.created_at }}
+                        </div>
+                        <div class="badge badge-neutral border-2">
+                            Size: {{ file.size }}
+                        </div>
+                        <div class="badge badge-neutral border-2">
+                            {{ file.filename }}
+                        </div>
                     </div>
-                {% else %}
-                    <div class="alert border-2 border-base-content">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-info shrink-0 w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                        <span class="font-mono">No audio files found. Generate some audio first!</span>
-                    </div>
-                {% endif %}
+                </div>
             </div>
-        </div>
+        {% endfor %}
     </div>
-</body>
-</html>
+{% else %}
+    <div class="alert border-2 border-base-content">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-info shrink-0 w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        <span class="font-mono">No audio files found. Generate some audio first!</span>
+    </div>
+{% endif %}
+{% endblock %}

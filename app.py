@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, send_file
+from flask import Flask, render_template, request, send_file, send_from_directory
 from piper import PiperVoice
 
 import wave
@@ -6,7 +6,10 @@ import io
 import os
 from datetime import datetime
 
-app = Flask(__name__)
+app = Flask(__name__, 
+    static_folder='static',  # specify the static folder
+    static_url_path=''  # this makes the static folder accessible at /static
+)
 
 # Initialize Piper TTS engine
 # Download suitable voice model and config files from:
@@ -15,9 +18,14 @@ app = Flask(__name__)
 VOICE_MODEL_PATH = "voices/en_GB-alan-medium.onnx"
 VOICE_CONFIG_PATH = "voices/en_GB-alan-medium.onnx.json"
 
-# Create a directory for audio files if it doesn't exist
+# Create directories if they don't exist
 AUDIO_DIR = "./output/audio_files"
 os.makedirs(AUDIO_DIR, exist_ok=True)
+
+# Ensure static directory structure exists
+STATIC_DIR = os.path.join(app.root_path, 'static')
+CSS_DIR = os.path.join(STATIC_DIR, 'css')
+os.makedirs(CSS_DIR, exist_ok=True)
 
 try:
     tts = PiperVoice.load(VOICE_MODEL_PATH, config_path=VOICE_CONFIG_PATH)

@@ -1,0 +1,34 @@
+/* Custom audio player styling for retro theme */
+audio {
+    filter: sepia(100%) saturate(70%) grayscale(1) contrast(99%) invert(12%);
+    width: 100%;
+    height: 40px;
+    background-color: #e2d5bc;
+    border: 2px solid #2e282a;
+    border-radius: 4px;
+    box-shadow: 2px 2px 0px #2e282a;
+}
+
+audio::-webkit-media-controls-panel {
+    background-color: #e2d5bc;
+}
+
+audio::-webkit-media-controls-current-time-display,
+audio::-webkit-media-controls-time-remaining-display {
+    color: #2e282a;
+    font-family: monospace;
+}
+
+audio::-webkit-media-controls-play-button,
+audio::-webkit-media-controls-mute-button {
+    background-color: #2e282a;
+    border-radius: 2px;
+    filter: invert(1);
+}
+
+audio::-webkit-media-controls-volume-slider,
+audio::-webkit-media-controls-timeline {
+    background-color: #2e282a;
+    border-radius: 2px;
+    height: 4px;
+}
