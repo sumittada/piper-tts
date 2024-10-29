@@ -1,63 +1,62 @@
 <!DOCTYPE html>
-<html>
+<html data-theme="light">
 <head>
     <title>Audio Library</title>
-    <style>
-        .audio-list {
-            max-width: 800px;
-            margin: 20px auto;
-        }
-        .audio-item {
-            border: 1px solid #ddd;
-            margin: 10px 0;
-            padding: 15px;
-            border-radius: 5px;
-            background-color: #f9f9f9;
-        }
-        .audio-meta {
-            color: #666;
-            font-size: 0.9em;
-            margin: 5px 0;
-        }
-        .no-files {
-            text-align: center;
-            color: #666;
-            padding: 20px;
-        }
-        .back-link {
-            display: block;
-            margin: 20px;
-            color: #0066cc;
-            text-decoration: none;
-        }
-        .back-link:hover {
-            text-decoration: underline;
-        }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.4.19/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
-    <a href="/" class="back-link">← Back to Generator</a>
-    <div class="audio-list">
-        <h1>Audio Library</h1>
-        
-        {% if audio_files %}
-            {% for file in audio_files %}
-                <div class="audio-item">
-                    <audio controls>
-                        <source src="{{ url_for('serve_audio', filename=file.filename) }}" type="audio/wav">
-                        Your browser does not support the audio element.
-                    </audio>
-                    <div class="audio-meta">
-                        <strong>Created:</strong> {{ file.created_at }} | 
-                        <strong>Size:</strong> {{ file.size }}
-                    </div>
-                </div>
-            {% endfor %}
-        {% else %}
-            <div class="no-files">
-                No audio files found. Generate some audio first!
+    <div class="container mx-auto px-4 py-8 max-w-3xl">
+        <div class="navbar bg-base-100 rounded-box shadow-lg mb-8">
+            <div class="flex-1">
+                <a href="/" class="btn btn-ghost">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                    </svg>
+                    Back to Generator
+                </a>
             </div>
-        {% endif %}
+            <div class="flex-none">
+                <h1 class="text-2xl font-bold px-4">Audio Library</h1>
+            </div>
+        </div>
+
+        <div class="card bg-base-100 shadow-xl">
+            <div class="card-body">
+                {% if audio_files %}
+                    <div class="space-y-4">
+                        {% for file in audio_files %}
+                            <div class="card bg-base-200">
+                                <div class="card-body">
+                                    <audio controls class="w-full">
+                                        <source src="{{ url_for('serve_audio', filename=file.filename) }}" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                    <div class="flex flex-wrap gap-4 text-sm mt-2">
+                                        <div class="badge badge-neutral">
+                                            Created: {{ file.created_at }}
+                                        </div>
+                                        <div class="badge badge-neutral">
+                                            Size: {{ file.size }}
+                                        </div>
+                                        <div class="badge badge-neutral">
+                                            {{ file.filename }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="alert">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-info shrink-0 w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <span>No audio files found. Generate some audio first!</span>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
     </div>
 </body>
 </html>
